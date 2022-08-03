@@ -6,7 +6,9 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
+import { ParamsPipe, ParamsDto } from '../common';
 import { IngredientInputDto } from './dto';
 import { IngredientsService } from './ingredients.service';
 
@@ -15,13 +17,23 @@ export class IngredientsController {
   constructor(private service: IngredientsService) {}
 
   @Get()
-  async findAll() {
-    return this.service.findAll();
+  async findAll(
+    @Query(ParamsPipe)
+    { formattedOrder: order, formattedRelations: relations }: ParamsDto,
+  ) {
+    return this.service.findAll({
+      relations,
+      order,
+    });
   }
 
   @Get(':id')
-  async findById(@Param('id') id: number) {
-    return this.service.findById(id);
+  async findById(
+    @Param('id') id: number,
+    @Query(ParamsPipe)
+    { formattedRelations: relations }: ParamsDto,
+  ) {
+    return this.service.findById(id, { relations });
   }
 
   @Post()

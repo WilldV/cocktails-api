@@ -19,8 +19,9 @@ export abstract class BaseService<T> {
     return this.repository.find(body);
   }
 
-  findById(id: number) {
+  findById(id: number, options?: FindOneOptions<T>) {
     return this.repository.findOne({
+      ...options,
       where: {
         id,
       } as unknown as FindOptionsWhere<T>,

@@ -6,7 +6,9 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
+import { ParamsDto, ParamsPipe } from '../common';
 import { SubcategoryInputDto } from './dto';
 import { SubcategoriesService } from './subcategories.service';
 
@@ -15,13 +17,23 @@ export class SubcategoriesController {
   constructor(private service: SubcategoriesService) {}
 
   @Get()
-  async findAll() {
-    return this.service.findAll();
+  async findAll(
+    @Query(ParamsPipe)
+    { formattedOrder: order, formattedRelations: relations }: ParamsDto,
+  ) {
+    return this.service.findAll({
+      relations,
+      order,
+    });
   }
 
   @Get(':id')
-  async findById(@Param('id') id: number) {
-    return this.service.findById(id);
+  async findById(
+    @Param('id') id: number,
+    @Query(ParamsPipe)
+    { formattedRelations: relations }: ParamsDto,
+  ) {
+    return this.service.findById(id, { relations });
   }
 
   @Post()
