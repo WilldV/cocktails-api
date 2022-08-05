@@ -6,5 +6,6 @@ import { StepsService } from './steps.service';
 @Module({
   imports: [TypeOrmModule.forFeature([Step])],
   providers: [StepsService],
+  exports: [StepsService],
 })
 export class StepsModule {}

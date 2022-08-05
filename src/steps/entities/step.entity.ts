@@ -4,9 +4,9 @@ import { BaseEntity } from '../../common';
 import { IngredientStep } from '../../ingredients-steps';
 
 export enum PreparationType {
-  DIRECT,
-  SHAKER,
-  MIXER_GLASS,
+  DIRECT = 'DIRECT',
+  SHAKER = 'SHAKER',
+  MIXER_GLASS = 'MIXER_GLASS',
 }
 
 @Entity('step')

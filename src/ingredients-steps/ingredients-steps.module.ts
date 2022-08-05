@@ -6,5 +6,6 @@ import { IngredientsStepsService } from './ingredients-steps.service';
 @Module({
   imports: [TypeOrmModule.forFeature([IngredientStep])],
   providers: [IngredientsStepsService],
+  exports: [IngredientsStepsService],
 })
 export class IngredientsStepsModule {}

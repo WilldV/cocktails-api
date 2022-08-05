@@ -4,10 +4,10 @@ import { Step } from '../../steps';
 import { SubCategory } from '../../subcategories';
 
 export enum AlcoholLevel {
-  ZERO,
-  LOW,
-  MEDIUM,
-  HIGH,
+  ZERO = 'ZERO',
+  LOW = 'LOW',
+  MEDIUM = 'MEDIUM',
+  HIGH = 'HIGH',
 }
 
 @Entity('cocktail')
