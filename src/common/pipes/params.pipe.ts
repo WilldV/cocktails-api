@@ -38,10 +38,30 @@ export class ParamsPipe
     const field = ['+', '-'].includes(firstCharacter)
       ? value.substring(1)
       : value;
-    if (firstCharacter == '-') {
-      formattedObject[field] = 'DESC';
-    } else {
-      formattedObject[field] = 'ASC';
-    }
+
+    const words = field.split('.').reverse();
+
+    let element;
+
+    words.forEach((word, i) => {
+      if (words.length == 1) {
+        if (firstCharacter == '-') {
+          formattedObject[word] = 'DESC';
+        } else {
+          formattedObject[word] = 'ASC';
+        }
+      } else if (!element) {
+        element = {};
+        if (firstCharacter == '-') {
+          element[word] = 'DESC';
+        } else {
+          element[word] = 'ASC';
+        }
+      } else if (i == words.length - 1) {
+        formattedObject[word] = element;
+      } else {
+        element = { [word]: { ...element } };
+      }
+    });
   }
 }
