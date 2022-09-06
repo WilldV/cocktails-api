@@ -60,7 +60,7 @@ export class CreateCocktailStepDto {
   @IsArray()
   @ArrayNotEmpty()
   @ValidateNested({ each: true })
-  ingredients: CreateCocktailIngredientDto[];
+  ingredientSteps: CreateCocktailIngredientDto[];
 }
 
 export class CreateCocktailIngredientDto {
