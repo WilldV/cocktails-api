@@ -1,4 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { Category } from '../categories';
+import { SubCategory } from './entities/subcategory.entity';
 import { SubcategoriesService } from './subcategories.service';
 
 describe('SubcategoriesService', () => {
@@ -6,7 +9,17 @@ describe('SubcategoriesService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [SubcategoriesService],
+      providers: [
+        SubcategoriesService,
+        {
+          provide: getRepositoryToken(SubCategory),
+          useValue: {},
+        },
+        {
+          provide: getRepositoryToken(Category),
+          useValue: {},
+        },
+      ],
     }).compile();
 
     service = module.get<SubcategoriesService>(SubcategoriesService);
