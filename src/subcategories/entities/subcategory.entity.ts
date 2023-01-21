@@ -14,7 +14,10 @@ export class SubCategory extends BaseEntity {
   @Column({ type: 'text', nullable: true })
   description?: string;
 
-  @ManyToOne(() => Category)
+  @ManyToOne(() => Category, {
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
+  })
   @JoinColumn({ name: 'categoryId' })
   category: Category;
 

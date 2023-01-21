@@ -27,7 +27,10 @@ export class Step extends BaseEntity {
   @Column({ type: 'text', nullable: true })
   description?: string;
 
-  @ManyToOne(() => Cocktail)
+  @ManyToOne(() => Cocktail, {
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
+  })
   @JoinColumn({ name: 'cocktailId' })
   cocktail: Cocktail;
 

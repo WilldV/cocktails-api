@@ -30,7 +30,10 @@ export class Cocktail extends BaseEntity {
   @Column({ type: 'text', nullable: true })
   variation?: string;
 
-  @ManyToOne(() => SubCategory)
+  @ManyToOne(() => SubCategory, {
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
+  })
   @JoinColumn({ name: 'subCategoryId' })
   subCategory: SubCategory;
 

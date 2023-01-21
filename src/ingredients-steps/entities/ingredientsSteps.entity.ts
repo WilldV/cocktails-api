@@ -14,11 +14,17 @@ export class IngredientStep extends BaseEntity {
   @Column()
   stepId: number;
 
-  @ManyToOne(() => Ingredient)
+  @ManyToOne(() => Ingredient, {
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
+  })
   @JoinColumn({ name: 'ingredientId' })
   ingredient: Ingredient;
 
-  @ManyToOne(() => Step)
+  @ManyToOne(() => Step, {
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
+  })
   @JoinColumn({ name: 'stepId' })
   step: Step;
 }
