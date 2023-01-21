@@ -10,8 +10,6 @@ export class Ingredient extends BaseEntity {
   @Column({ type: 'text', nullable: true })
   description?: string;
 
-  @OneToMany(() => IngredientStep, (is) => is.ingredient, {
-    cascade: ['soft-remove'],
-  })
+  @OneToMany(() => IngredientStep, (is) => is.ingredient)
   ingredientSteps: IngredientStep[];
 }
