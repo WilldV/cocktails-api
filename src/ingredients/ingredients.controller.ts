@@ -8,10 +8,12 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { ParamsPipe, ParamsDto } from '../common';
+import { ApiTags } from '@nestjs/swagger';
+import { FindAllParamsDto, FindOneParamsDto, ParamsPipe } from '../common';
 import { IngredientInputDto } from './dto';
 import { IngredientsService } from './ingredients.service';
 
+@ApiTags('ingredients')
 @Controller('ingredients')
 export class IngredientsController {
   constructor(private service: IngredientsService) {}
@@ -19,7 +21,7 @@ export class IngredientsController {
   @Get()
   async findAll(
     @Query(ParamsPipe)
-    { formattedOrder: order, formattedRelations: relations }: ParamsDto,
+    { formattedOrder: order, formattedRelations: relations }: FindAllParamsDto,
   ) {
     return this.service.findAll({
       relations,
@@ -31,7 +33,7 @@ export class IngredientsController {
   async findById(
     @Param('id') id: number,
     @Query(ParamsPipe)
-    { formattedRelations: relations }: ParamsDto,
+    { formattedRelations: relations }: FindOneParamsDto,
   ) {
     return this.service.findById(id, { relations });
   }

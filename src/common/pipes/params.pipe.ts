@@ -1,11 +1,12 @@
 import { PipeTransform, Injectable, ArgumentMetadata } from '@nestjs/common';
-import { ParamsDto } from '../dto';
+import { FindAllParamsDto, FindOneParamsDto } from '../dto';
 
 @Injectable()
 export class ParamsPipe
-  implements PipeTransform<ParamsDto, Record<string, any>>
+  implements
+    PipeTransform<FindAllParamsDto | FindOneParamsDto, Record<string, any>>
 {
-  transform({ relations, order }: ParamsDto): Record<string, any> {
+  transform({ relations, order }: FindAllParamsDto): Record<string, any> {
     const formattedParams = {};
 
     if (relations) {

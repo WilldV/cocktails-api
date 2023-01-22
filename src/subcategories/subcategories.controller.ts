@@ -8,10 +8,12 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { ParamsDto, ParamsPipe } from '../common';
+import { ApiTags } from '@nestjs/swagger';
+import { FindAllParamsDto, FindOneParamsDto, ParamsPipe } from '../common';
 import { SubcategoryInputDto } from './dto';
 import { SubcategoriesService } from './subcategories.service';
 
+@ApiTags('subcategories')
 @Controller('subcategories')
 export class SubcategoriesController {
   constructor(private service: SubcategoriesService) {}
@@ -19,7 +21,7 @@ export class SubcategoriesController {
   @Get()
   async findAll(
     @Query(ParamsPipe)
-    { formattedOrder: order, formattedRelations: relations }: ParamsDto,
+    { formattedOrder: order, formattedRelations: relations }: FindAllParamsDto,
   ) {
     return this.service.findAll({
       relations,
@@ -31,7 +33,7 @@ export class SubcategoriesController {
   async findById(
     @Param('id') id: number,
     @Query(ParamsPipe)
-    { formattedRelations: relations }: ParamsDto,
+    { formattedRelations: relations }: FindOneParamsDto,
   ) {
     return this.service.findById(id, { relations });
   }

@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   ArrayMinSize,
@@ -14,24 +15,43 @@ import { AlcoholLevel } from '../entities/cocktail.entity';
 
 //TODO: Handle images
 export class CocktailInputDto {
+  @ApiProperty({ description: 'Name for cocktail' })
   @IsNotEmpty()
   name: string;
 
+  @ApiProperty({ description: "Id of cocktail's subcategory" })
   @Type(() => Number)
   @IsNumber()
   subCategoryId: number;
 
+  @ApiProperty({
+    description: 'Alcohol level of  cocktail',
+    enum: AlcoholLevel,
+  })
   @IsEnum(AlcoholLevel)
   alcoholLevel: AlcoholLevel;
 
+  @ApiProperty({
+    description: 'Description of cocktail',
+    required: false,
+  })
   @IsOptional()
   @IsNotEmpty()
   description?: string;
 
+  @ApiProperty({
+    description: 'Possible variation of main preparation for the cocktail',
+    required: false,
+  })
   @IsOptional()
   @IsNotEmpty()
   variation?: string;
 
+  @ApiProperty({
+    description: 'Steps for cocktail preparation',
+    isArray: true,
+    type: () => CreateCocktailStepDto,
+  })
   @Type(() => CreateCocktailStepDto)
   @IsArray()
   @ArrayNotEmpty()
@@ -39,35 +59,63 @@ export class CocktailInputDto {
   steps: CreateCocktailStepDto[];
 }
 
-export class CreateCocktailStepDto {
+class CreateCocktailStepDto {
+  @ApiProperty({
+    description: 'Order of step',
+  })
   @Type(() => Number)
   @IsNumber()
   order: number;
 
+  @ApiProperty({
+    description: 'Preparation type of the step',
+    enum: PreparationType,
+    required: false,
+  })
   @IsOptional()
   @IsEnum(PreparationType)
   preparationType?: PreparationType;
 
+  @ApiProperty({
+    description: 'Last instruction to complete the step',
+    required: false,
+  })
   @IsOptional()
   @IsNotEmpty()
   finalStep?: string;
 
+  @ApiProperty({
+    description: 'Description of step',
+    required: false,
+  })
   @IsOptional()
   @IsNotEmpty()
   description?: string;
 
+  @ApiProperty({
+    description: 'Ingredients to use on step',
+    isArray: true,
+    type: () => CreateCocktailIngredientDto,
+  })
   @Type(() => CreateCocktailIngredientDto)
   @IsArray()
   @ArrayNotEmpty()
   @ValidateNested({ each: true })
-  ingredientSteps: CreateCocktailIngredientDto[];
+  ingredients: CreateCocktailIngredientDto[];
 }
 
-export class CreateCocktailIngredientDto {
+class CreateCocktailIngredientDto {
+  @ApiProperty({
+    description: 'Quantity of ingredient',
+    required: false,
+  })
   @IsOptional()
   @IsNotEmpty()
   quantity?: string;
 
+  @ApiProperty({
+    description: 'ID of ingredient',
+  })
   @Type(() => Number)
   @IsNumber()
   ingredientId: number;

@@ -1,1 +1,2 @@
-export * from './Params.dto';
+export * from './FindOneParams.dto';
+export * from './FindAllParams.dto';

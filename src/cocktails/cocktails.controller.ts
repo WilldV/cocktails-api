@@ -8,11 +8,13 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { ParamsPipe, ParamsDto } from '../common';
+import { ApiTags } from '@nestjs/swagger';
+import { ParamsPipe, FindAllParamsDto, FindOneParamsDto } from '../common';
 import { CocktailsService } from './cocktails.service';
 import { CocktailInputDto } from './dto/CocktailInput.dto';
 import { CreateCocktail, DeleteCocktail, UpdateCocktail } from './use-cases';
 
+@ApiTags('cocktails')
 @Controller('cocktails')
 export class CocktailsController {
   constructor(
@@ -25,7 +27,7 @@ export class CocktailsController {
   @Get()
   async findAll(
     @Query(ParamsPipe)
-    { formattedOrder: order, formattedRelations: relations }: ParamsDto,
+    { formattedOrder: order, formattedRelations: relations }: FindAllParamsDto,
   ) {
     return this.service.findAll({
       relations,
@@ -37,7 +39,7 @@ export class CocktailsController {
   async findById(
     @Param('id') id: number,
     @Query(ParamsPipe)
-    { formattedRelations: relations }: ParamsDto,
+    { formattedRelations: relations }: FindOneParamsDto,
   ) {
     return this.service.findById(id, { relations });
   }

@@ -41,7 +41,7 @@ export class CreateCocktail {
     newSteps.forEach(({ id, order }) => {
       const matchStep = steps.find((step) => step.order == order);
 
-      matchStep.ingredientSteps.forEach(({ quantity, ingredientId }) => {
+      matchStep.ingredients.forEach(({ quantity, ingredientId }) => {
         newIngredientSteps.push({
           stepId: id,
           ingredientId,

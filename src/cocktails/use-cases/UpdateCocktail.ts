@@ -60,7 +60,7 @@ export class UpdateCocktail {
     newSteps.forEach(({ id, order }) => {
       const matchStep = body.steps.find((step) => step.order == order);
 
-      matchStep.ingredientSteps.forEach(({ quantity, ingredientId }) => {
+      matchStep.ingredients.forEach(({ quantity, ingredientId }) => {
         newIngredientSteps.push({
           stepId: id,
           ingredientId,
