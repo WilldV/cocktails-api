@@ -15,6 +15,9 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('Cocktails API')
     .setVersion('1.0')
+    .setDescription(
+      'API for cocktails receipes. Build with [NestJS](https://nestjs.com) for practice purpose. [Source code](https://github.com/WilldV/cocktails-api)',
+    )
     .addApiKey(
       {
         type: 'apiKey',
