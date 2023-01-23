@@ -28,7 +28,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     let responseBody;
 
-    if ([400, 401, 404].includes(httpStatus)) {
+    if ([400, 401, 403, 404].includes(httpStatus)) {
       responseBody = exception['response'];
     } else {
       responseBody = {
