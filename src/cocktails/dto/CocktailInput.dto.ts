@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
-  ArrayMinSize,
   ArrayNotEmpty,
   IsArray,
   IsEnum,
@@ -10,8 +9,7 @@ import {
   IsOptional,
   ValidateNested,
 } from 'class-validator';
-import { PreparationType } from '../../steps';
-import { AlcoholLevel } from '../entities/cocktail.entity';
+import { AlcoholLevel, PreparationType } from '../../common';
 
 //TODO: Handle images
 export class CocktailInputDto {
@@ -72,8 +70,8 @@ class CreateCocktailStepDto {
     enum: PreparationType,
     required: false,
   })
-  @IsOptional()
   @IsEnum(PreparationType)
+  @IsOptional()
   preparationType?: PreparationType;
 
   @ApiProperty({

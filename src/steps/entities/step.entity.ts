@@ -1,15 +1,8 @@
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { Cocktail } from '../../cocktails';
-import { BaseEntity } from '../../common';
+import { BaseEntity, PreparationType } from '../../common';
 import { IngredientStep } from '../../ingredients-steps';
-
-export enum PreparationType {
-  DIRECT = 'DIRECT',
-  SHAKER = 'SHAKER',
-  MIXER_GLASS = 'MIXER_GLASS',
-  ADD = 'ADD',
-}
 
 @Entity('step')
 export class Step extends BaseEntity {

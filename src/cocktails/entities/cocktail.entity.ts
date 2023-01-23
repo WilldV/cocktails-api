@@ -1,15 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
-import { BaseEntity } from '../../common';
+import { AlcoholLevel, BaseEntity } from '../../common';
 import { Step } from '../../steps';
 import { SubCategory } from '../../subcategories';
-
-export enum AlcoholLevel {
-  ZERO = 'ZERO',
-  LOW = 'LOW',
-  MEDIUM = 'MEDIUM',
-  HIGH = 'HIGH',
-}
 
 @Entity('cocktail')
 export class Cocktail extends BaseEntity {
