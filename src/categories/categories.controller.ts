@@ -8,7 +8,8 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { Category } from '.';
 import { FindAllParamsDto, FindOneParamsDto, ParamsPipe } from '../common';
 import { CategoriesService } from './categories.service';
 import { CategoryInputDto } from './dto';
@@ -18,6 +19,11 @@ import { CategoryInputDto } from './dto';
 export class CategoriesController {
   constructor(private service: CategoriesService) {}
 
+  @ApiOkResponse({
+    description:
+      'Returns all categories with requested relations loaded and sorted by order field if provided',
+    type: [Category],
+  })
   @Get()
   async findAll(
     @Query(ParamsPipe)
@@ -29,6 +35,11 @@ export class CategoriesController {
     });
   }
 
+  @ApiOkResponse({
+    description:
+      'Returns a category related to given ID with requested relations loaded',
+    type: Category,
+  })
   @Get(':id')
   async findById(
     @Param('id') id: number,
@@ -38,16 +49,29 @@ export class CategoriesController {
     return this.service.findById(id, { relations });
   }
 
+  @ApiOkResponse({
+    description: 'Returns a new category created with the given data',
+    type: Category,
+  })
   @Post()
   async create(@Body() body: CategoryInputDto) {
     return this.service.create(body);
   }
 
+  @ApiOkResponse({
+    description:
+      'Returns an updated category with the given data related to given ID',
+    type: Category,
+  })
   @Put(':id')
   async update(@Param('id') id: number, @Body() body: CategoryInputDto) {
     return this.service.updateById(id, body);
   }
 
+  @ApiOkResponse({
+    description: 'Returns a deleted category related to given ID',
+    type: Category,
+  })
   @Delete(':id')
   async delete(@Param('id') id: number) {
     return this.service.deleteById(id);

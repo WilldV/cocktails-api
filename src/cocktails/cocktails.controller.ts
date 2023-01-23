@@ -8,10 +8,11 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ParamsPipe, FindAllParamsDto, FindOneParamsDto } from '../common';
 import { CocktailsService } from './cocktails.service';
 import { CocktailInputDto } from './dto/CocktailInput.dto';
+import { Cocktail } from './entities/cocktail.entity';
 import { CreateCocktail, DeleteCocktail, UpdateCocktail } from './use-cases';
 
 @ApiTags('cocktails')
@@ -24,6 +25,11 @@ export class CocktailsController {
     private updateCocktail: UpdateCocktail,
   ) {}
 
+  @ApiOkResponse({
+    description:
+      'Returns all cocktails with requested relations loaded and sorted by order field if provided',
+    type: [Cocktail],
+  })
   @Get()
   async findAll(
     @Query(ParamsPipe)
@@ -35,6 +41,11 @@ export class CocktailsController {
     });
   }
 
+  @ApiOkResponse({
+    description:
+      'Returns a cocktail related to given ID with requested relations loaded',
+    type: Cocktail,
+  })
   @Get(':id')
   async findById(
     @Param('id') id: number,
@@ -44,16 +55,29 @@ export class CocktailsController {
     return this.service.findById(id, { relations });
   }
 
+  @ApiOkResponse({
+    description: 'Returns a new cocktail created with the given data',
+    type: Cocktail,
+  })
   @Post()
   async create(@Body() body: CocktailInputDto) {
     return this.createCocktail.call(body);
   }
 
+  @ApiOkResponse({
+    description:
+      'Returns an updated cocktails with the given data related to given ID',
+    type: Cocktail,
+  })
   @Put(':id')
   async updateById(@Param('id') id: number, @Body() body: CocktailInputDto) {
     return this.updateCocktail.call(id, body);
   }
 
+  @ApiOkResponse({
+    description: 'Returns a deleted cocktail related to given ID',
+    type: Cocktail,
+  })
   @Delete(':id')
   async deleteById(@Param('id') id: number) {
     return this.deleteCocktail.call(id);
