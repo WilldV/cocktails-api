@@ -16,7 +16,7 @@ class PaginatedResponseDto<T> {
   @ApiProperty({ description: 'Number of records taken', example: 20 })
   limit: number;
 
-  @ApiProperty({ description: 'Records' })
+  @ApiProperty({ description: 'Records', type: [() => Object] })
   data: T[];
 }
 
