@@ -8,6 +8,7 @@ import {
   Repository,
 } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
+import { DEFAULT_LIMIT } from '../const';
 
 export abstract class BaseService<T> {
   constructor(protected repository: Repository<T>) {}
@@ -105,7 +106,21 @@ export abstract class BaseService<T> {
 
   async findAndCount(body?: FindManyOptions<T>) {
     try {
-      return await this.repository.findAndCount(body);
+      if (!body.take) {
+        body.take = DEFAULT_LIMIT;
+      }
+      if (!body.skip) {
+        body.skip = 0;
+      }
+
+      const [data, total] = await this.repository.findAndCount(body);
+
+      return {
+        total,
+        offset: body.skip,
+        limit: body.take,
+        data,
+      };
     } catch (error) {
       this.errorHandler(error);
     }
