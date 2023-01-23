@@ -8,8 +8,7 @@ export class FindAllParamsDto extends FindOneParamsDto {
     required: false,
     type: [() => String, () => [String]],
     description: 'Field for processing sort',
-    example:
-      'For name field: name for sorting ascending, -name for sorting descending',
+    example: '-name',
   })
   @IsOptional()
   @IsNotEmpty()
