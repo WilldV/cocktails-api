@@ -9,7 +9,12 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { FindAllParamsDto, FindOneParamsDto, ParamsPipe } from '../common';
+import {
+  ApiOkResponsePaginated,
+  FindAllParamsDto,
+  FindOneParamsDto,
+  ParamsPipe,
+} from '../common';
 import { SubcategoryInputDto } from './dto';
 import { SubCategory } from './entities/subcategory.entity';
 import { SubcategoriesService } from './subcategories.service';
@@ -19,19 +24,25 @@ import { SubcategoriesService } from './subcategories.service';
 export class SubcategoriesController {
   constructor(private service: SubcategoriesService) {}
 
-  @ApiOkResponse({
-    description:
-      'Returns all subcategories with requested relations loaded and sorted by order field if provided',
-    type: [SubCategory],
-  })
+  @ApiOkResponsePaginated(
+    SubCategory,
+    'Returns all subcategories with requested relations loaded and sorted by order field if provided',
+  )
   @Get()
   async findAll(
     @Query(ParamsPipe)
-    { formattedOrder: order, formattedRelations: relations }: FindAllParamsDto,
+    {
+      formattedOrder: order,
+      formattedRelations: relations,
+      limit,
+      offset,
+    }: FindAllParamsDto,
   ) {
-    return this.service.findAll({
+    return this.service.findAndCount({
       relations,
       order,
+      take: limit,
+      skip: offset,
     });
   }
   @ApiOkResponse({

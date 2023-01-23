@@ -9,7 +9,12 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { ParamsPipe, FindAllParamsDto, FindOneParamsDto } from '../common';
+import {
+  ParamsPipe,
+  FindAllParamsDto,
+  FindOneParamsDto,
+  ApiOkResponsePaginated,
+} from '../common';
 import { CocktailsService } from './cocktails.service';
 import { CocktailInputDto } from './dto/CocktailInput.dto';
 import { Cocktail } from './entities/cocktail.entity';
@@ -25,19 +30,25 @@ export class CocktailsController {
     private updateCocktail: UpdateCocktail,
   ) {}
 
-  @ApiOkResponse({
-    description:
-      'Returns all cocktails with requested relations loaded and sorted by order field if provided',
-    type: [Cocktail],
-  })
+  @ApiOkResponsePaginated(
+    Cocktail,
+    'Returns all cocktails with requested relations loaded and sorted by order field if provided',
+  )
   @Get()
   async findAll(
     @Query(ParamsPipe)
-    { formattedOrder: order, formattedRelations: relations }: FindAllParamsDto,
+    {
+      formattedOrder: order,
+      formattedRelations: relations,
+      limit,
+      offset,
+    }: FindAllParamsDto,
   ) {
-    return this.service.findAll({
+    return this.service.findAndCount({
       relations,
       order,
+      take: limit,
+      skip: offset,
     });
   }
 

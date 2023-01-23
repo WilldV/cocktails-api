@@ -9,7 +9,12 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { FindAllParamsDto, FindOneParamsDto, ParamsPipe } from '../common';
+import {
+  ApiOkResponsePaginated,
+  FindAllParamsDto,
+  FindOneParamsDto,
+  ParamsPipe,
+} from '../common';
 import { IngredientInputDto } from './dto';
 import { Ingredient } from './entities/ingredient.entity';
 import { IngredientsService } from './ingredients.service';
@@ -19,19 +24,25 @@ import { IngredientsService } from './ingredients.service';
 export class IngredientsController {
   constructor(private service: IngredientsService) {}
 
-  @ApiOkResponse({
-    description:
-      'Returns all ingredients with requested relations loaded and sorted by order field if provided',
-    type: [Ingredient],
-  })
+  @ApiOkResponsePaginated(
+    Ingredient,
+    'Returns all ingredients with requested relations loaded and sorted by order field if provided',
+  )
   @Get()
   async findAll(
     @Query(ParamsPipe)
-    { formattedOrder: order, formattedRelations: relations }: FindAllParamsDto,
+    {
+      formattedOrder: order,
+      formattedRelations: relations,
+      limit,
+      offset,
+    }: FindAllParamsDto,
   ) {
-    return this.service.findAll({
+    return this.service.findAndCount({
       relations,
       order,
+      take: limit,
+      skip: offset,
     });
   }
 
