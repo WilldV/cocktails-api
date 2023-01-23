@@ -7,10 +7,13 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import {
   ApiOkResponsePaginated,
+  API_KEY_HEADER,
+  AuthGuard,
   FindAllParamsDto,
   FindOneParamsDto,
   ParamsPipe,
@@ -63,6 +66,8 @@ export class SubcategoriesController {
     description: 'Returns a new subcategory created with the given data',
     type: SubCategory,
   })
+  @ApiSecurity(API_KEY_HEADER)
+  @UseGuards(AuthGuard)
   @Post()
   async create(@Body() body: SubcategoryInputDto) {
     return this.service.create(body);
@@ -73,6 +78,8 @@ export class SubcategoriesController {
       'Returns an updated subcategory with the given data related to given ID',
     type: SubCategory,
   })
+  @ApiSecurity(API_KEY_HEADER)
+  @UseGuards(AuthGuard)
   @Put(':id')
   async update(@Param('id') id: number, @Body() body: SubcategoryInputDto) {
     return this.service.updateById(id, body);
@@ -82,6 +89,8 @@ export class SubcategoriesController {
     description: 'Returns a deleted subcategory related to given ID',
     type: SubCategory,
   })
+  @ApiSecurity(API_KEY_HEADER)
+  @UseGuards(AuthGuard)
   @Delete(':id')
   async delete(@Param('id') id: number) {
     return this.service.deleteById(id);

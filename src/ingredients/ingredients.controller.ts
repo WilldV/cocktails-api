@@ -7,10 +7,13 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import {
   ApiOkResponsePaginated,
+  API_KEY_HEADER,
+  AuthGuard,
   FindAllParamsDto,
   FindOneParamsDto,
   ParamsPipe,
@@ -64,6 +67,8 @@ export class IngredientsController {
     description: 'Returns a new ingredient created with the given data',
     type: Ingredient,
   })
+  @ApiSecurity(API_KEY_HEADER)
+  @UseGuards(AuthGuard)
   @Post()
   async create(@Body() body: IngredientInputDto) {
     return this.service.create(body);
@@ -74,6 +79,8 @@ export class IngredientsController {
       'Returns an updated ingredient with the given data related to given ID',
     type: Ingredient,
   })
+  @ApiSecurity(API_KEY_HEADER)
+  @UseGuards(AuthGuard)
   @Put(':id')
   async update(@Param('id') id: number, @Body() body: IngredientInputDto) {
     return this.service.updateById(id, body);
@@ -83,6 +90,8 @@ export class IngredientsController {
     description: 'Returns a deleted ingredient related to given ID',
     type: Ingredient,
   })
+  @ApiSecurity(API_KEY_HEADER)
+  @UseGuards(AuthGuard)
   @Delete(':id')
   async delete(@Param('id') id: number) {
     return this.service.deleteById(id);

@@ -7,13 +7,16 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import {
   ParamsPipe,
   FindAllParamsDto,
   FindOneParamsDto,
   ApiOkResponsePaginated,
+  AuthGuard,
+  API_KEY_HEADER,
 } from '../common';
 import { CocktailsService } from './cocktails.service';
 import { CocktailInputDto } from './dto/CocktailInput.dto';
@@ -70,6 +73,8 @@ export class CocktailsController {
     description: 'Returns a new cocktail created with the given data',
     type: Cocktail,
   })
+  @ApiSecurity(API_KEY_HEADER)
+  @UseGuards(AuthGuard)
   @Post()
   async create(@Body() body: CocktailInputDto) {
     return this.createCocktail.call(body);
@@ -80,6 +85,8 @@ export class CocktailsController {
       'Returns an updated cocktails with the given data related to given ID',
     type: Cocktail,
   })
+  @ApiSecurity(API_KEY_HEADER)
+  @UseGuards(AuthGuard)
   @Put(':id')
   async updateById(@Param('id') id: number, @Body() body: CocktailInputDto) {
     return this.updateCocktail.call(id, body);
@@ -89,6 +96,8 @@ export class CocktailsController {
     description: 'Returns a deleted cocktail related to given ID',
     type: Cocktail,
   })
+  @ApiSecurity(API_KEY_HEADER)
+  @UseGuards(AuthGuard)
   @Delete(':id')
   async deleteById(@Param('id') id: number) {
     return this.deleteCocktail.call(id);

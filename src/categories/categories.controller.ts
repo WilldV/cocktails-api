@@ -7,11 +7,14 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { Category } from '.';
 import {
   ApiOkResponsePaginated,
+  API_KEY_HEADER,
+  AuthGuard,
   FindAllParamsDto,
   FindOneParamsDto,
   ParamsPipe,
@@ -64,6 +67,8 @@ export class CategoriesController {
     description: 'Returns a new category created with the given data',
     type: Category,
   })
+  @ApiSecurity(API_KEY_HEADER)
+  @UseGuards(AuthGuard)
   @Post()
   async create(@Body() body: CategoryInputDto) {
     return this.service.create(body);
@@ -74,6 +79,8 @@ export class CategoriesController {
       'Returns an updated category with the given data related to given ID',
     type: Category,
   })
+  @ApiSecurity(API_KEY_HEADER)
+  @UseGuards(AuthGuard)
   @Put(':id')
   async update(@Param('id') id: number, @Body() body: CategoryInputDto) {
     return this.service.updateById(id, body);
@@ -83,6 +90,8 @@ export class CategoriesController {
     description: 'Returns a deleted category related to given ID',
     type: Category,
   })
+  @ApiSecurity(API_KEY_HEADER)
+  @UseGuards(AuthGuard)
   @Delete(':id')
   async delete(@Param('id') id: number) {
     return this.service.deleteById(id);
