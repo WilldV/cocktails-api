@@ -1,3 +1,4 @@
+import { BadRequestException } from '@nestjs/common/exceptions';
 import {
   DeepPartial,
   FindManyOptions,
@@ -11,21 +12,39 @@ import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity
 export abstract class BaseService<T> {
   constructor(protected repository: Repository<T>) {}
 
+  private errorHandler(error: Error) {
+    if (error.name === 'EntityPropertyNotFoundError') {
+      throw new BadRequestException(
+        error.message.split('.')?.[0] || error.message,
+      );
+    }
+
+    throw error;
+  }
+
   rawQuery(query: string) {
     return this.repository.query(query);
   }
 
-  findAll(body?: FindManyOptions<T>) {
-    return this.repository.find(body);
+  async findAll(body?: FindManyOptions<T>) {
+    try {
+      return await this.repository.find(body);
+    } catch (error) {
+      this.errorHandler(error);
+    }
   }
 
-  findById(id: number, options?: FindOneOptions<T>) {
-    return this.repository.findOne({
-      ...options,
-      where: {
-        id,
-      } as unknown as FindOptionsWhere<T>,
-    });
+  async findById(id: number, options?: FindOneOptions<T>) {
+    try {
+      return await this.repository.findOne({
+        ...options,
+        where: {
+          id,
+        } as unknown as FindOptionsWhere<T>,
+      });
+    } catch (error) {
+      this.errorHandler(error);
+    }
   }
 
   async updateById(id: string | number, body: QueryDeepPartialEntity<T>) {
@@ -84,7 +103,11 @@ export abstract class BaseService<T> {
     return this.repository.count(body);
   }
 
-  findAndCount(body?: FindManyOptions<T>) {
-    return this.repository.findAndCount(body);
+  async findAndCount(body?: FindManyOptions<T>) {
+    try {
+      return await this.repository.findAndCount(body);
+    } catch (error) {
+      this.errorHandler(error);
+    }
   }
 }
