@@ -10,31 +10,43 @@ export class ParamsPipe
     const formattedParams = {};
 
     if (relations) {
-      let formatted = [];
-      if (typeof relations == 'string') {
-        formatted.push(relations);
-      } else if (Array.isArray(relations)) {
-        formatted = relations;
-      }
-      formattedParams['formattedRelations'] = formatted;
+      formattedParams['formattedRelations'] = this.formatRelations(relations);
     }
 
     if (order) {
-      const formatted = {};
-      if (Array.isArray(order)) {
-        order.forEach((v) => {
-          this.formatOrder(v, formatted);
-        });
-      } else {
-        this.formatOrder(order, formatted);
-      }
-      formattedParams['formattedOrder'] = formatted;
+      formattedParams['formattedOrder'] = this.formatOrder(order);
     }
 
     return formattedParams;
   }
 
-  formatOrder(value: string, formattedObject: Record<string, 'DESC' | 'ASC'>) {
+  formatRelations(relations: string | string[]) {
+    let formatted = [];
+
+    if (typeof relations == 'string') {
+      formatted.push(relations);
+    } else if (Array.isArray(relations)) {
+      formatted = relations;
+    }
+
+    return formatted;
+  }
+
+  formatOrder(order: string | string[]) {
+    let formatted = {};
+    if (Array.isArray(order)) {
+      order.forEach((v) => {
+        const newOrder = this.formatSingleOrder(v);
+        formatted = { ...formatted, ...newOrder };
+      });
+    } else {
+      formatted = this.formatSingleOrder(order);
+    }
+
+    return formatted;
+  }
+
+  formatSingleOrder(value: string) {
     const firstCharacter = value[0];
     const field = ['+', '-'].includes(firstCharacter)
       ? value.substring(1)
@@ -42,27 +54,32 @@ export class ParamsPipe
 
     const words = field.split('.').reverse();
 
-    let element;
+    const orderTypeMap = {
+      '+': 'ASC',
+      '-': 'DESC',
+    };
 
-    words.forEach((word, i) => {
-      if (words.length == 1) {
-        if (firstCharacter == '-') {
-          formattedObject[word] = 'DESC';
-        } else {
-          formattedObject[word] = 'ASC';
-        }
-      } else if (!element) {
-        element = {};
-        if (firstCharacter == '-') {
-          element[word] = 'DESC';
-        } else {
-          element[word] = 'ASC';
-        }
-      } else if (i == words.length - 1) {
-        formattedObject[word] = element;
+    const newFormmatedOrder = {};
+
+    if (words.length == 1) {
+      return {
+        [words[0]]: orderTypeMap[firstCharacter] ?? orderTypeMap['+'],
+      };
+    }
+
+    let element = {
+      [words[0]]: orderTypeMap[firstCharacter] ?? orderTypeMap['+'],
+    };
+
+    for (let i = 1; i < words.length; i++) {
+      const word = words[i];
+      if (i == words.length - 1) {
+        newFormmatedOrder[word] = element;
       } else {
         element = { [word]: { ...element } };
       }
-    });
+    }
+
+    return newFormmatedOrder;
   }
 }
