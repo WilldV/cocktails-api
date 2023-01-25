@@ -34,7 +34,7 @@ export class UpdateCocktail {
 
     const stepIDs = existingSteps.map((step) => step.id);
 
-    const [] = await Promise.all([
+    await Promise.all([
       this.stepsService.delete({
         cocktailId,
       }),
