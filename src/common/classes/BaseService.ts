@@ -104,7 +104,7 @@ export abstract class BaseService<T> {
     return this.repository.count(body);
   }
 
-  async findAndCount(body?: FindManyOptions<T>) {
+  async findAndCount(body: FindManyOptions<T> = {}) {
     try {
       if (!body.take) {
         body.take = DEFAULT_LIMIT;
