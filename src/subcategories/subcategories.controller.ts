@@ -9,7 +9,12 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiSecurity, ApiTags } from '@nestjs/swagger';
+import {
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiSecurity,
+  ApiTags,
+} from '@nestjs/swagger';
 import {
   ApiOkResponsePaginated,
   API_KEY_HEADER,
@@ -53,6 +58,10 @@ export class SubcategoriesController {
       'Returns a subcategory related to given ID with requested relations loaded',
     type: SubCategory,
   })
+  @ApiNotFoundResponse({
+    description:
+      'Returns a 404 error if subcategory with given ID is not found',
+  })
   @Get(':id')
   async findById(
     @Param('id') id: number,
@@ -78,6 +87,10 @@ export class SubcategoriesController {
       'Returns an updated subcategory with the given data related to given ID',
     type: SubCategory,
   })
+  @ApiNotFoundResponse({
+    description:
+      'Returns a 404 error if subcategory with given ID is not found',
+  })
   @ApiSecurity(API_KEY_HEADER)
   @UseGuards(AuthGuard)
   @Put(':id')
@@ -88,6 +101,10 @@ export class SubcategoriesController {
   @ApiOkResponse({
     description: 'Returns a deleted subcategory related to given ID',
     type: SubCategory,
+  })
+  @ApiNotFoundResponse({
+    description:
+      'Returns a 404 error if subcategory with given ID is not found',
   })
   @ApiSecurity(API_KEY_HEADER)
   @UseGuards(AuthGuard)

@@ -9,7 +9,12 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiSecurity, ApiTags } from '@nestjs/swagger';
+import {
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiSecurity,
+  ApiTags,
+} from '@nestjs/swagger';
 import {
   ParamsPipe,
   FindAllParamsDto,
@@ -60,6 +65,9 @@ export class CocktailsController {
       'Returns a cocktail related to given ID with requested relations loaded',
     type: Cocktail,
   })
+  @ApiNotFoundResponse({
+    description: 'Returns a 404 error if cocktail with given ID is not found',
+  })
   @Get(':id')
   async findById(
     @Param('id') id: number,
@@ -85,6 +93,9 @@ export class CocktailsController {
       'Returns an updated cocktails with the given data related to given ID',
     type: Cocktail,
   })
+  @ApiNotFoundResponse({
+    description: 'Returns a 404 error if cocktail with given ID is not found',
+  })
   @ApiSecurity(API_KEY_HEADER)
   @UseGuards(AuthGuard)
   @Put(':id')
@@ -95,6 +106,9 @@ export class CocktailsController {
   @ApiOkResponse({
     description: 'Returns a deleted cocktail related to given ID',
     type: Cocktail,
+  })
+  @ApiNotFoundResponse({
+    description: 'Returns a 404 error if cocktail with given ID is not found',
   })
   @ApiSecurity(API_KEY_HEADER)
   @UseGuards(AuthGuard)

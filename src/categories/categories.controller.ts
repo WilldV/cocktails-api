@@ -9,8 +9,12 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiSecurity, ApiTags } from '@nestjs/swagger';
-import { Category } from '.';
+import {
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiSecurity,
+  ApiTags,
+} from '@nestjs/swagger';
 import {
   ApiOkResponsePaginated,
   API_KEY_HEADER,
@@ -21,6 +25,7 @@ import {
 } from '../common';
 import { CategoriesService } from './categories.service';
 import { CategoryInputDto } from './dto';
+import { Category } from './entities/category.entity';
 
 @ApiTags('categories')
 @Controller('categories')
@@ -54,6 +59,9 @@ export class CategoriesController {
       'Returns a category related to given ID with requested relations loaded',
     type: Category,
   })
+  @ApiNotFoundResponse({
+    description: 'Returns a 404 error if category with given ID is not found',
+  })
   @Get(':id')
   async findById(
     @Param('id') id: number,
@@ -79,6 +87,9 @@ export class CategoriesController {
       'Returns an updated category with the given data related to given ID',
     type: Category,
   })
+  @ApiNotFoundResponse({
+    description: 'Returns a 404 error if category with given ID is not found',
+  })
   @ApiSecurity(API_KEY_HEADER)
   @UseGuards(AuthGuard)
   @Put(':id')
@@ -89,6 +100,9 @@ export class CategoriesController {
   @ApiOkResponse({
     description: 'Returns a deleted category related to given ID',
     type: Category,
+  })
+  @ApiNotFoundResponse({
+    description: 'Returns a 404 error if category with given ID is not found',
   })
   @ApiSecurity(API_KEY_HEADER)
   @UseGuards(AuthGuard)
