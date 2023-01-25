@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import { API_KEY_HEADER } from './common';
+import { API_KEY_HEADER, NotFoundInterceptor } from './common';
 import { AllExceptionsFilter } from './exception.filter';
 import { getValidationPipe } from './getValidationPipe';
 
@@ -9,7 +9,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors();
   app.useGlobalPipes(getValidationPipe());
-
+  app.useGlobalInterceptors(new NotFoundInterceptor());
   app.useGlobalFilters(new AllExceptionsFilter());
 
   const config = new DocumentBuilder()
@@ -28,6 +28,7 @@ async function bootstrap() {
       API_KEY_HEADER,
     )
     .build();
+
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('', app, document, {
     customSiteTitle: 'Cocktails API',
