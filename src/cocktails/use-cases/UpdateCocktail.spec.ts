@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { IngredientsStepsService } from '../../ingredients-steps/ingredients-steps.service';
-import { CreateCocktail } from './CreateCocktail';
 import { CocktailsService } from '../cocktails.service';
 import { StepsService } from '../../steps/steps.service';
 import { AlcoholLevel } from '../../common';

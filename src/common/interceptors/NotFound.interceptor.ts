@@ -11,7 +11,6 @@ import { tap } from 'rxjs/operators';
 @Injectable()
 export class NotFoundInterceptor implements NestInterceptor {
   intercept(_context: ExecutionContext, next: CallHandler): Observable<any> {
-    const now = Date.now();
     return next.handle().pipe(
       tap((value) => {
         if (!value) {

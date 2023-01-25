@@ -4,7 +4,6 @@ import {
   ExecutionContext,
   UnauthorizedException,
 } from '@nestjs/common';
-import { ForbiddenException } from '@nestjs/common/exceptions';
 import { Observable } from 'rxjs';
 import { API_KEY_HEADER } from '../const';
 
