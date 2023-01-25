@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 import { BaseEntity } from '../../common';
-import { IngredientStep } from '../../ingredients-steps';
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
+import { IngredientStep } from '../../ingredients-steps/entities/ingredientsSteps.entity';
 
 @Entity('ingredient')
 export class Ingredient extends BaseEntity {

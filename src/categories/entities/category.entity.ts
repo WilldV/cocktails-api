@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 import { BaseEntity } from '../../common';
-import { SubCategory } from '../../subcategories';
 import { ApiProperty } from '@nestjs/swagger';
+import { SubCategory } from '../../subcategories/entities/subcategory.entity';
 
 @Entity('category')
 export class Category extends BaseEntity {

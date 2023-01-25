@@ -1,8 +1,8 @@
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from '../../common';
-import { Ingredient } from '../../ingredients';
-import { Step } from '../../steps';
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
+import { Ingredient } from '../../ingredients/entities/ingredient.entity';
+import { Step } from '../../steps/entities/step.entity';
 
 @Entity('ingredientStep')
 export class IngredientStep extends BaseEntity {
