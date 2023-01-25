@@ -13,31 +13,31 @@ export class AuthGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
-    return validateRequest(request);
-  }
-}
-
-function validateRequest({
-  headers,
-}: Request): boolean | Promise<boolean> | Observable<boolean> {
-  const apiKey =
-    headers[API_KEY_HEADER] || headers[API_KEY_HEADER.toLowerCase()];
-
-  if (!apiKey) {
-    throw new UnauthorizedException({
-      statusCode: 401,
-      message: 'API KEY is required',
-      code: 'UNAUTHORIZED',
-    });
+    return this.validateRequest(request);
   }
 
-  if (!process.env.ALLOWED_API_KEYS?.includes(apiKey)) {
-    throw new UnauthorizedException({
-      statusCode: 401,
-      message: 'Invalid API KEY',
-      code: 'UNAUTHORIZED',
-    });
-  }
+  validateRequest({
+    headers,
+  }: Request): boolean | Promise<boolean> | Observable<boolean> {
+    const apiKey =
+      headers[API_KEY_HEADER] || headers[API_KEY_HEADER.toLowerCase()];
 
-  return true;
+    if (!apiKey) {
+      throw new UnauthorizedException({
+        statusCode: 401,
+        message: 'API KEY is required',
+        code: 'UNAUTHORIZED',
+      });
+    }
+
+    if (!process.env.ALLOWED_API_KEYS?.includes(apiKey)) {
+      throw new UnauthorizedException({
+        statusCode: 401,
+        message: 'Invalid API KEY',
+        code: 'UNAUTHORIZED',
+      });
+    }
+
+    return true;
+  }
 }
