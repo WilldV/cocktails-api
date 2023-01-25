@@ -33,7 +33,7 @@ function validateRequest({
   }
 
   if (!process.env.ALLOWED_API_KEYS?.includes(apiKey)) {
-    throw new ForbiddenException({
+    throw new UnauthorizedException({
       statusCode: 401,
       message: 'Invalid API KEY',
       code: 'UNAUTHORIZED',
