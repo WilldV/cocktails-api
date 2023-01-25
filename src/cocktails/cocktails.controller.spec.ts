@@ -1,9 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { SubCategory } from '../subcategories';
 import { CocktailsController } from './cocktails.controller';
 import { CocktailsService } from './cocktails.service';
-import { Cocktail } from './entities/cocktail.entity';
 import { CreateCocktail, DeleteCocktail, UpdateCocktail } from './use-cases';
 
 describe('CocktailsController', () => {
@@ -27,14 +24,6 @@ describe('CocktailsController', () => {
         },
         {
           provide: UpdateCocktail,
-          useValue: {},
-        },
-        {
-          provide: getRepositoryToken(SubCategory),
-          useValue: {},
-        },
-        {
-          provide: getRepositoryToken(Cocktail),
           useValue: {},
         },
       ],

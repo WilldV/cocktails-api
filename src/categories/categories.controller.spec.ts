@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { CategoriesService, Category } from '.';
+import { CategoriesService } from '.';
 import { CategoriesController } from './categories.controller';
 
 describe('CategoriesController', () => {
@@ -12,10 +11,6 @@ describe('CategoriesController', () => {
       providers: [
         {
           provide: CategoriesService,
-          useValue: {},
-        },
-        {
-          provide: getRepositoryToken(Category),
           useValue: {},
         },
       ],

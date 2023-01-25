@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Category } from '../categories';
 import { SubCategory } from './entities/subcategory.entity';
 import { SubcategoriesService } from './subcategories.service';
 
@@ -13,10 +12,6 @@ describe('SubcategoriesService', () => {
         SubcategoriesService,
         {
           provide: getRepositoryToken(SubCategory),
-          useValue: {},
-        },
-        {
-          provide: getRepositoryToken(Category),
           useValue: {},
         },
       ],
