@@ -68,3 +68,18 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+## Trying the app
+
+Run the app and access to app URL. By default http://127.0.0.1:3000
+
+You can try GET methods without setting an API KEY.
+
+To try POST, PUT and DELETE:
+
+1. Access to login form with Authorize button
+
+   ![Swagger auth button](./doc/authorize-button.png)
+
+2. Set API KEY you defined on ALLOWED_API_KEYS .env
+   ![Swagger auth form](./doc/authorize-form.png)
